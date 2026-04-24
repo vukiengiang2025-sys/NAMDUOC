@@ -1,0 +1,6 @@
+{
+  "appId": "com.namduoc.kpiassistant",
+  "appName": "Nam Dược KPI",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
