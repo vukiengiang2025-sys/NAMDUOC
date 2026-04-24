@@ -137,7 +137,7 @@ export default function App() {
         daysPassed: stats.passedWorkingDays,
         daysRemaining: stats.remainingWorkingDaysCount,
         totalWorkingDays: stats.totalWorkingDaysCount,
-        userProfile: state.userProfile
+        userProfile: state.config.userProfile
       }, 
       state.analysisHistory.slice(-3).map(h => h.content), // Lấy 3 lần phân tích gần nhất làm ngữ cảnh
       state.config.geminiApiKey);
@@ -177,6 +177,8 @@ export default function App() {
             entries={state.kpi.entries} 
             onDataLoaded={handleKpiLoaded} 
             onClear={() => setState(prev => prev ? ({ ...prev, kpi: { ...prev.kpi, entries: [] } }) : null)}
+            geminiApiKey={state.config.geminiApiKey}
+            userProfileName={state.config.userProfile?.name}
           />
         );
       case 'promotions':

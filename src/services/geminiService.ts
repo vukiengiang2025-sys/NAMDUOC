@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { Promotion } from "../types";
+import { Promotion, KpiEntry } from "../types";
 
 const getGenAI = (customKey?: string) => {
   const apiKey = customKey || process.env.GEMINI_API_KEY || "";
@@ -8,6 +8,46 @@ const getGenAI = (customKey?: string) => {
 };
 
 export const geminiService = {
+  async extractKpiFromCsv(csvText: string, employeeName: string, customKey?: string): Promise<KpiEntry[]> {
+    const ai = getGenAI(customKey);
+    const prompt = `Dưới đây là file dữ liệu KPI chung (định dạng CSV) của team Miền Tây 2.
+    Bạn hãy lọc và rút trích độc lập CHỈ CÁC DÒNG dữ liệu liên quan đến nhân viên "${employeeName}".
+    Dữ liệu cần trả về là một mảng JSON theo định dạng sau (chỉ trả về JSON Array, KHÔNG kèm giải thích thêm):
+    [
+      { "date": "YYYY-MM-DD", "sales": 1000000, "coverage": 5 }
+    ]
+    
+    Yêu cầu:
+    - Tìm đúng tên nhân viên (có thể viết hoa/thường, không dấu).
+    - Cột nào tương ứng với "Ngày" (Date), cột nào tương ứng với "Doanh số" (Sales/Doanh thu), cột nào tương ứng với "Độ phủ" (Coverage / Phủ điểm / PC).
+    - Đảm bảo sales và coverage phải là kiểu [number].
+    
+    Dữ liệu CSV gốc:
+    ${csvText.substring(0, 8000)}`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              date: { type: Type.STRING },
+              sales: { type: Type.NUMBER },
+              coverage: { type: Type.NUMBER }
+            },
+            required: ["date", "sales", "coverage"]
+          }
+        }
+      }
+    });
+
+    return JSON.parse(response.text || "[]");
+  },
+
   async extractPromotions(text: string, customKey?: string): Promise<Promotion[]> {
     const ai = getGenAI(customKey);
     const prompt = `Trích xuất thông tin chương trình khuyến mãi từ văn bản dưới đây. 

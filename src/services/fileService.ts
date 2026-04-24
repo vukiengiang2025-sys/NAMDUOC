@@ -3,6 +3,26 @@ import * as mammoth from 'mammoth';
 import { KpiEntry } from '../types';
 
 export const fileService = {
+  async parseKpiExcelRawAsCsv(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = new Uint8Array(e.target?.result as ArrayBuffer);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const csvData = XLSX.utils.sheet_to_csv(worksheet);
+          resolve(csvData);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(file);
+    });
+  },
+
   async parseKpiExcel(file: File): Promise<KpiEntry[]> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

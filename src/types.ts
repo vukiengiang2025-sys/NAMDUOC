@@ -34,6 +34,11 @@ export interface WorkingConfig {
   holidays: string[]; // ISO dates
   weeklyOffDays: number[]; // 0=Sunday, 6=Saturday
   geminiApiKey?: string;
+  userProfile?: {
+    name: string;
+    region: string;
+    experience: string;
+  };
 }
 
 export interface AnalysisRecord {
@@ -48,9 +53,4 @@ export interface AppState {
   notes: UserNote[];
   config: WorkingConfig;
   analysisHistory: AnalysisRecord[];
-  userProfile?: {
-    name: string;
-    region: string;
-    experience: string;
-  };
 }

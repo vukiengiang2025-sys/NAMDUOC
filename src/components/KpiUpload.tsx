@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { Upload, FileText, CheckCircle, XCircle, Trash2 } from 'lucide-react';
 import { fileService } from '../services/fileService';
+import { geminiService } from '../services/geminiService';
 import { KpiEntry } from '../types';
 
 interface KpiUploadProps {
   onDataLoaded: (entries: KpiEntry[]) => void;
   entries: KpiEntry[];
   onClear: () => void;
+  geminiApiKey?: string;
+  userProfileName?: string;
 }
 
-export const KpiUpload: React.FC<KpiUploadProps> = ({ onDataLoaded, entries, onClear }) => {
+export const KpiUpload: React.FC<KpiUploadProps> = ({ onDataLoaded, entries, onClear, geminiApiKey, userProfileName }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,13 +20,25 @@ export const KpiUpload: React.FC<KpiUploadProps> = ({ onDataLoaded, entries, onC
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!userProfileName) {
+      setError("Vui lòng nhập Họ Tên trong Cài đặt để AI chỉ trích xuất dữ liệu của riêng bạn từ file chung.");
+      return;
+    }
+
     setIsUploading(true);
     setError(null);
     try {
-      const data = await fileService.parseKpiExcel(file);
-      onDataLoaded(data);
-    } catch (err) {
-      setError("Không thể đọc file Excel. Vui lòng kiểm tra lại định dạng.");
+      // Dùng CSV và Gemini AI để bóc tách theo đúng tên nhân viên
+      const csvData = await fileService.parseKpiExcelRawAsCsv(file);
+      const extractedData = await geminiService.extractKpiFromCsv(csvData, userProfileName, geminiApiKey);
+      
+      if (extractedData.length === 0) {
+        setError(`Không tìm thấy dữ liệu cho bảng tên "${userProfileName}". Hãy kiểm tra lại file hoặc tên trên phần Cài Đặt.`);
+      } else {
+        onDataLoaded(extractedData);
+      }
+    } catch (err: any) {
+      setError(err?.message || "Lỗi đọc file Excel hoặc phân tích. Kiểm tra định dạng và API Key.");
       console.error(err);
     } finally {
       setIsUploading(false);
