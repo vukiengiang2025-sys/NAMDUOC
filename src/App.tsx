@@ -5,17 +5,23 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Dashboard } from './components/Dashboard';
-import { KpiUpload } from './components/KpiUpload';
+import { TargetSetup } from './components/TargetSetup';
 import { PromotionUpload } from './components/PromotionUpload';
 import { TaskBoard } from './components/TaskBoard';
 import { SettingsPanel } from './components/SettingsPanel';
 import { BottomNav } from './components/BottomNav';
-import { AppState, UserNote, Promotion, KpiEntry, WorkingConfig } from './types';
+import { AppState, UserNote, Promotion, KpiEntry, WorkingConfig, KpiItem } from './types';
 import { dbService } from './services/dbService';
 import { kpiService } from './services/kpiService';
 import { geminiService } from './services/geminiService';
 import { notificationService } from './services/notificationService';
 import { motion, AnimatePresence } from 'motion/react';
+
+const defaultKpiItems: KpiItem[] = [
+  { id: 'sales', name: 'Doanh số', target: 0, actual: 0, unit: 'triệu VNĐ', type: 'sales' },
+  { id: 'coverage', name: 'Độ phủ', target: 0, actual: 0, unit: 'nhà thuốc', type: 'coverage' },
+  { id: 'mid_month', name: 'Tiến độ 15 tây (55%)', target: 55, actual: 0, unit: '%', type: 'mid_month' },
+];
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -26,7 +32,10 @@ export default function App() {
   // Initial Load
   useEffect(() => {
     const loadState = async () => {
-      const saved = await dbService.getState();
+      let saved = await dbService.getState();
+      if (saved && (!saved.kpi.kpiItems || saved.kpi.kpiItems.length === 0)) {
+        saved.kpi.kpiItems = defaultKpiItems;
+      }
       setState(saved);
       
       // Request notification permissions
@@ -69,10 +78,14 @@ export default function App() {
     );
   }
 
-  const handleKpiLoaded = (entries: KpiEntry[]) => {
+  const handleKpiLoaded = (entries: KpiEntry[], kpiItems: KpiItem[]) => {
     setState(prev => prev ? ({
       ...prev,
-      kpi: { ...prev.kpi, entries: [...prev.kpi.entries, ...entries] }
+      kpi: { 
+        ...prev.kpi, 
+        entries: [...prev.kpi.entries, ...entries],
+        kpiItems: kpiItems.length > 0 ? kpiItems : prev.kpi.kpiItems
+      }
     }) : null);
   };
 
@@ -137,7 +150,8 @@ export default function App() {
         daysPassed: stats.passedWorkingDays,
         daysRemaining: stats.remainingWorkingDaysCount,
         totalWorkingDays: stats.totalWorkingDaysCount,
-        userProfile: state.config.userProfile
+        userProfile: state.config.userProfile,
+        kpiItems: state.kpi.kpiItems
       }, 
       state.analysisHistory.slice(-3).map(h => h.content), // Lấy 3 lần phân tích gần nhất làm ngữ cảnh
       state.config.geminiApiKey);
@@ -158,6 +172,19 @@ export default function App() {
     }
   };
 
+  const handleUpdateKpiItem = (id: string, actual: number) => {
+    setState(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        kpi: {
+          ...prev.kpi,
+          kpiItems: prev.kpi.kpiItems.map(k => k.id === id ? { ...k, actual } : k)
+        }
+      };
+    });
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -166,6 +193,8 @@ export default function App() {
             stats={stats} 
             promotions={state.promotions} 
             notes={state.notes} 
+            kpiItems={state.kpi.kpiItems || []}
+            onUpdateKpiItem={handleUpdateKpiItem}
             onAnalyze={handleAnalyze}
             isAnalyzing={isAnalyzing}
             aiAnalysis={aiAnalysis}
@@ -173,10 +202,9 @@ export default function App() {
         );
       case 'kpi':
         return (
-          <KpiUpload 
-            entries={state.kpi.entries} 
-            onDataLoaded={handleKpiLoaded} 
-            onClear={() => setState(prev => prev ? ({ ...prev, kpi: { ...prev.kpi, entries: [] } }) : null)}
+          <TargetSetup 
+            kpiItems={state.kpi.kpiItems || []} 
+            onUpdateTargets={(newItems) => setState(prev => prev ? ({ ...prev, kpi: { ...prev.kpi, kpiItems: newItems } }) : null)}
             geminiApiKey={state.config.geminiApiKey}
             userProfileName={state.config.userProfile?.name}
           />
@@ -212,7 +240,7 @@ export default function App() {
           />
         );
       default:
-        return <Dashboard stats={stats} promotions={state.promotions} notes={state.notes} onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} aiAnalysis={aiAnalysis} />;
+        return <Dashboard stats={stats} promotions={state.promotions} notes={state.notes} kpiItems={state.kpi.kpiItems || []} onUpdateKpiItem={handleUpdateKpiItem} onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} aiAnalysis={aiAnalysis} />;
     }
   };
 

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Upload, FileText, CheckCircle, XCircle, Trash2 } from 'lucide-react';
 import { fileService } from '../services/fileService';
 import { geminiService } from '../services/geminiService';
-import { KpiEntry } from '../types';
+import { KpiEntry, KpiItem } from '../types';
 
 interface KpiUploadProps {
-  onDataLoaded: (entries: KpiEntry[]) => void;
+  onDataLoaded: (entries: KpiEntry[], kpiItems: KpiItem[]) => void;
   entries: KpiEntry[];
   onClear: () => void;
   geminiApiKey?: string;
@@ -28,14 +28,26 @@ export const KpiUpload: React.FC<KpiUploadProps> = ({ onDataLoaded, entries, onC
     setIsUploading(true);
     setError(null);
     try {
-      // Dùng CSV và Gemini AI để bóc tách theo đúng tên nhân viên
-      const csvData = await fileService.parseKpiExcelRawAsCsv(file);
-      const extractedData = await geminiService.extractKpiFromCsv(csvData, userProfileName, geminiApiKey);
+      const csvDataTab1 = await fileService.parseKpiExcelRawAsCsv(file, 0);
+      const extractedData = await geminiService.extractKpiFromCsv(csvDataTab1, userProfileName, geminiApiKey);
       
-      if (extractedData.length === 0) {
+      const csvDataTab2 = await fileService.parseKpiExcelRawAsCsv(file, 1);
+      let extractedKpiItems: KpiItem[] = [];
+      
+      if (csvDataTab2) {
+        const rawKpis = await geminiService.extractKpiTargetsFromCsv(csvDataTab2, userProfileName, geminiApiKey);
+        extractedKpiItems = rawKpis.map(k => ({
+          id: Math.random().toString(36).substr(2, 9),
+          name: k.name,
+          target: k.target,
+          actual: 0
+        }));
+      }
+
+      if (extractedData.length === 0 && extractedKpiItems.length === 0) {
         setError(`Không tìm thấy dữ liệu cho bảng tên "${userProfileName}". Hãy kiểm tra lại file hoặc tên trên phần Cài Đặt.`);
       } else {
-        onDataLoaded(extractedData);
+        onDataLoaded(extractedData, extractedKpiItems);
       }
     } catch (err: any) {
       setError(err?.message || "Lỗi đọc file Excel hoặc phân tích. Kiểm tra định dạng và API Key.");

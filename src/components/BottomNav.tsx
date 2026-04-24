@@ -8,10 +8,10 @@ interface BottomNavProps {
 
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab }) => {
   const tabs = [
-    { id: 'dashboard', icon: Home, label: 'Bàn làm việc' },
-    { id: 'kpi', icon: BarChart2, label: 'KPI' },
+    { id: 'dashboard', icon: Home, label: 'Chính' },
+    { id: 'kpi', icon: BarChart2, label: 'Chỉ tiêu' },
     { id: 'promotions', icon: Tag, label: 'KM' },
-    { id: 'notes', icon: Notebook, label: 'Ghi chú' },
+    { id: 'notes', icon: Notebook, label: 'Kế hoạch' },
     { id: 'settings', icon: Settings, label: 'Cài đặt' },
   ];
 
@@ -31,7 +31,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
             >
               <Icon size={18} className={isActive ? 'stroke-[2.5px]' : 'stroke-2'} />
               <span className={`text-[8px] mt-0.5 font-black uppercase tracking-tighter ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                {tab.id.slice(0, 4)}
+                {tab.label}
               </span>
             </button>
           );

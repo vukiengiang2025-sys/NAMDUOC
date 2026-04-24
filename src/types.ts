@@ -4,12 +4,22 @@ export interface KpiEntry {
   coverage: number;
 }
 
+export interface KpiItem {
+  id: string;
+  name: string;
+  target: number;
+  actual: number;
+  unit?: string;
+  type?: 'sales' | 'coverage' | 'mid_month' | 'other';
+}
+
 export interface KpiData {
   entries: KpiEntry[];
   targets: {
     sales: number;
     coverage: number;
   };
+  kpiItems: KpiItem[];
 }
 
 export interface Promotion {

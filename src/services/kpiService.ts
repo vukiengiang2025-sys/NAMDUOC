@@ -1,5 +1,5 @@
 import { differenceInDays, endOfMonth, isSameDay, isWeekend, startOfMonth, eachDayOfInterval, format } from 'date-fns';
-import { KpiData, WorkingConfig } from '../types';
+import { KpiData, WorkingConfig, KpiItem } from '../types';
 
 export const kpiService = {
   calculateStats(kpi: KpiData, config: WorkingConfig) {
@@ -7,17 +7,17 @@ export const kpiService = {
     const start = startOfMonth(today);
     const end = endOfMonth(today);
 
-    // Filter entries for current month
-    const currentMonthEntries = kpi.entries.filter(e => {
-      const d = new Date(e.date);
-      return d >= start && d <= end;
-    });
+    // Get from kpiItems
+    const salesItem = kpi.kpiItems?.find(item => item.type === 'sales') || { target: 0, actual: 0 };
+    const coverageItem = kpi.kpiItems?.find(item => item.type === 'coverage') || { target: 0, actual: 0 };
 
-    const totalSales = currentMonthEntries.reduce((acc, curr) => acc + curr.sales, 0);
-    const totalCoverage = currentMonthEntries.reduce((acc, curr) => acc + curr.coverage, 0);
+    const totalSales = salesItem.actual;
+    const totalCoverage = coverageItem.actual;
+    const targetSales = salesItem.target;
+    const targetCoverage = coverageItem.target;
 
-    const salesPace = kpi.targets.sales > 0 ? (totalSales / kpi.targets.sales) * 100 : 0;
-    const coveragePace = kpi.targets.coverage > 0 ? (totalCoverage / kpi.targets.coverage) * 100 : 0;
+    const salesPace = targetSales > 0 ? (totalSales / targetSales) * 100 : 0;
+    const coveragePace = targetCoverage > 0 ? (totalCoverage / targetCoverage) * 100 : 0;
 
     // Working days logic
     const allDays = eachDayOfInterval({ start, end });
@@ -31,13 +31,13 @@ export const kpiService = {
     const passedWorkingDays = workingDays.filter(day => day <= today).length;
     const remainingWorkingDaysCount = totalWorkingDaysCount - passedWorkingDays;
 
-    const timePace = (passedWorkingDays / totalWorkingDaysCount) * 100;
+    const timePace = totalWorkingDaysCount > 0 ? (passedWorkingDays / totalWorkingDaysCount) * 100 : 0;
 
     const salesDiff = salesPace - timePace;
     const coverageDiff = coveragePace - timePace;
 
     const dailyTargetSales = remainingWorkingDaysCount > 0 
-      ? Math.max(0, (kpi.targets.sales - totalSales) / remainingWorkingDaysCount)
+      ? Math.max(0, (targetSales - totalSales) / remainingWorkingDaysCount)
       : 0;
 
     return {
@@ -52,8 +52,8 @@ export const kpiService = {
       salesDiff,
       coverageDiff,
       dailyTargetSales,
-      targetSales: kpi.targets.sales,
-      targetCoverage: kpi.targets.coverage
+      targetSales,
+      targetCoverage
     };
   }
 };
