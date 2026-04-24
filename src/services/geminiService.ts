@@ -142,6 +142,7 @@ export const geminiService = {
     totalWorkingDays: number;
     userProfile?: { name: string; region: string; experience: string };
     kpiItems?: KpiItem[];
+    documents?: any[]; // using any prevent circular imports if not needed or explicitly import Document 
   }, history: string[], customKey?: string): Promise<string> {
     const ai = getGenAI(customKey);
     const historyContext = history.length > 0 
@@ -155,10 +156,15 @@ export const geminiService = {
     const kpiItemsContext = data.kpiItems && data.kpiItems.length > 0
       ? `\nChi tiết các chỉ tiêu (Tab 2 - rất quan trọng để tính lương KPI):\n${data.kpiItems.map(k => `- ${k.name}: Đạt ${k.actual} / Mục tiêu ${k.target} (${((k.actual/k.target)*100).toFixed(1)}%)`).join('\n')}`
       : "";
+      
+    const documentsContext = data.documents && data.documents.length > 0
+      ? `\nTÀI LIỆU KHO LƯU TRỮ (Bạn có thể tham khảo thông tin trong các file này để hỗ trợ phân tích công việc):\n${data.documents.map(d => `--- File: ${d.name} ---\n${d.content.substring(0, 3000)}...`).join('\n\n')}\n`
+      : "";
 
     const prompt = `Bạn là một chuyên gia tư vấn chiến lược KPI cho trình dược viên Nam Dược. Hãy phân tích các số liệu sau và đưa ra nhận xét cá nhân hóa:
     ${userContext}
     ${historyContext}
+    ${documentsContext}
     Số liệu hiện tại (Tổng quan):
     - Doanh số thực tế: ${data.totalSales} / Mục tiêu: ${data.targetSales} (${data.targetSales ? ((data.totalSales / data.targetSales) * 100).toFixed(1) : 0}%)
     - Độ phủ thực tế: ${data.totalCoverage} / Mục tiêu: ${data.targetCoverage} (${data.targetCoverage ? ((data.totalCoverage / data.targetCoverage) * 100).toFixed(1) : 0}%)
@@ -167,8 +173,8 @@ export const geminiService = {
     ${kpiItemsContext}
 
     Yêu cầu:
-    1. Nhận xét ngắn gọn, sắc sảo (dưới 150 từ).
-    2. Tập trung phân tích sâu vào các chỉ tiêu chi tiết (Tab 2) vì đây là các yếu tố quyết định lương KPI.
+    1. Nhận xét ngắn gọn, sắc sảo (khoảng 200 từ).
+    2. Tập trung phân tích sâu vào các chỉ tiêu chi tiết (Tab 2) và xem xét các TÀI LIỆU KHO LƯU TRỮ nếu có để đưa ra giải pháp cụ thể cho công việc.
     3. Nếu tiến độ chỉ tiêu nào đang chậm so với thời gian (Tiến độ thời gian là ${(data.daysPassed / data.totalWorkingDays * 100).toFixed(1)}%), hãy cảnh báo và gợi ý giải pháp.
     4. Luôn giữ tinh thần hỗ trợ và thúc đẩy năng lượng tích cực cho Sales.
     

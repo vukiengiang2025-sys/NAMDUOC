@@ -78,10 +78,10 @@ export const TargetSetup: React.FC<TargetSetupProps> = ({ kpiItems, onUpdateTarg
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-black tracking-tighter text-slate-900">Thiết lập Chỉ Tiêu</h1>
-          <p className="text-sm text-slate-500">Đầu tháng: cấu hình các mục tiêu trong tháng.</p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Cấu hình các mục tiêu đầu tháng</p>
         </div>
-        <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 shadow-sm border border-red-200">
-          <Target size={24} />
+        <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center shadow-sm border border-red-100">
+          <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3af/512.gif" alt="Target" className="w-8 h-8" />
         </div>
       </div>
 

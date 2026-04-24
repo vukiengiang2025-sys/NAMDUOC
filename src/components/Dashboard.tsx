@@ -46,8 +46,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shadow-lg shadow-red-100 overflow-hidden border border-red-500">
-            <span className="text-white font-black text-xl tracking-tighter">N</span>
+          <div className="w-10 h-10 flex items-center justify-center rounded-lg overflow-hidden bg-red-50 border border-red-100 shadow-sm">
+             <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" alt="Rocket" className="w-8 h-8" />
           </div>
           <div>
             <h1 className="text-lg font-bold text-slate-800">Xin chào!</h1>
@@ -186,7 +186,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
         <div className="space-y-3 pt-3 border-t border-slate-800">
           <div className="flex justify-between items-center text-xs">
-            <span className="text-slate-400">Doanh số cần đạt mỗi ngày:</span>
+            <span className="text-slate-400 flex items-center">
+              <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/512.gif" alt="Fire" className="w-4 h-4 mr-1" />
+              Doanh số cần đạt mỗi ngày:
+            </span>
             <span className="font-bold text-red-300">{stats.dailyTargetSales.toLocaleString('vi-VN', { maximumFractionDigits: 1 })} triệu VNĐ</span>
           </div>
         </div>
@@ -196,7 +199,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       <div className="bg-red-50 p-6 rounded-3xl border border-red-100 space-y-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+            <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="Robot AI" className="w-6 h-6" />
             <h2 className="text-[10px] font-bold text-red-900 uppercase tracking-widest">Gemini AI Insights</h2>
           </div>
           <button 
@@ -237,9 +240,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
             ))}
           </div>
         ) : (
-          <div className="bg-white border-2 border-dashed border-slate-100 p-8 rounded-3xl text-center">
-            <Info size={24} className="mx-auto text-slate-200 mb-2" />
-            <p className="text-xs text-slate-400">Không có khuyến mãi nào đang diễn ra.</p>
+          <div className="bg-white border-2 border-dashed border-slate-200 p-8 rounded-3xl flex flex-col items-center justify-center text-center">
+            <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f634/512.gif" alt="Sleeping" className="w-10 h-10 mb-3 opacity-60" />
+            <p className="text-xs text-slate-400 font-bold">Không có khuyến mãi nào đang diễn ra.</p>
           </div>
         )}
       </div>
@@ -257,7 +260,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
             ))}
           </div>
         ) : (
-          <p className="text-xs text-slate-400 italic">Thật tuyệt! Không có việc nào còn tồn đọng.</p>
+          <div className="flex items-center space-x-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+             <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2728/512.gif" alt="Sparkles" className="w-6 h-6" />
+             <p className="text-xs text-slate-500 font-bold">Thật tuyệt! Không có việc nào còn tồn đọng.</p>
+          </div>
         )}
       </div>
     </div>

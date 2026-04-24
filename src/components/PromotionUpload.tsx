@@ -40,9 +40,14 @@ export const PromotionUpload: React.FC<PromotionUploadProps> = ({
 
   return (
     <div className="p-6 space-y-8 pb-24">
-      <div className="space-y-1">
-        <h2 className="text-xl font-bold text-slate-800">Quản lý Khuyến mãi</h2>
-        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">AI trích xuất chương trình từ file DOCX</p>
+      <div className="flex items-center space-x-3">
+        <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center shadow-sm border border-orange-100 shrink-0">
+          <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4e2/512.gif" alt="Megaphone" className="w-8 h-8" />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-slate-800">Khuyến mãi</h2>
+          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">AI trích xuất từ file DOCX</p>
+        </div>
       </div>
 
       <label className="block">

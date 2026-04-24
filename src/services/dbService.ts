@@ -6,10 +6,12 @@ const STORAGE_KEY = 'namduoc_app_state';
 const initialState: AppState = {
   kpi: {
     entries: [],
-    targets: { sales: 1000000, coverage: 100 }
+    targets: { sales: 1000000, coverage: 100 },
+    kpiItems: []
   },
   promotions: [],
   notes: [],
+  documents: [],
   config: {
     holidays: [],
     weeklyOffDays: [0] // Default Sunday off

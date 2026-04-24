@@ -10,7 +10,8 @@ import { PromotionUpload } from './components/PromotionUpload';
 import { TaskBoard } from './components/TaskBoard';
 import { SettingsPanel } from './components/SettingsPanel';
 import { BottomNav } from './components/BottomNav';
-import { AppState, UserNote, Promotion, KpiEntry, WorkingConfig, KpiItem } from './types';
+import { DocumentVault } from './components/DocumentVault';
+import { AppState, UserNote, Promotion, KpiEntry, WorkingConfig, KpiItem, Document } from './types';
 import { dbService } from './services/dbService';
 import { kpiService } from './services/kpiService';
 import { geminiService } from './services/geminiService';
@@ -151,7 +152,8 @@ export default function App() {
         daysRemaining: stats.remainingWorkingDaysCount,
         totalWorkingDays: stats.totalWorkingDaysCount,
         userProfile: state.config.userProfile,
-        kpiItems: state.kpi.kpiItems
+        kpiItems: state.kpi.kpiItems,
+        documents: state.documents
       }, 
       state.analysisHistory.slice(-3).map(h => h.content), // Lấy 3 lần phân tích gần nhất làm ngữ cảnh
       state.config.geminiApiKey);
@@ -207,6 +209,13 @@ export default function App() {
             onUpdateTargets={(newItems) => setState(prev => prev ? ({ ...prev, kpi: { ...prev.kpi, kpiItems: newItems } }) : null)}
             geminiApiKey={state.config.geminiApiKey}
             userProfileName={state.config.userProfile?.name}
+          />
+        );
+      case 'vault':
+        return (
+          <DocumentVault 
+            documents={state.documents || []} 
+            onUpdateDocuments={(docs) => setState(prev => prev ? ({ ...prev, documents: docs }) : null)}
           />
         );
       case 'promotions':

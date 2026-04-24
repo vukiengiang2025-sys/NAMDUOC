@@ -28,10 +28,15 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ notes, onAdd, onToggle, on
 
   return (
     <div className="p-6 space-y-8 pb-32">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-xl font-bold text-slate-800">Công việc & Deadline</h2>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Quản lý hiệu suất hàng ngày</p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <div className="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center shadow-sm border border-amber-100">
+             <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4dd/512.gif" alt="Memo" className="w-8 h-8" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-800">Kế hoạch</h2>
+            <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Quản lý hiệu suất hàng ngày</p>
+          </div>
         </div>
         <button 
           onClick={() => setIsAdding(true)}
@@ -144,8 +149,8 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ notes, onAdd, onToggle, on
 
         {notes.length === 0 && (
           <div className="text-center py-20 px-8">
-            <div className="w-20 h-20 bg-white border border-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-              <Notebook className="text-slate-200" size={32} />
+            <div className="w-20 h-20 bg-amber-50 border border-amber-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm overflow-hidden">
+               <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f389/512.gif" alt="Party" className="w-12 h-12" />
             </div>
             <p className="text-slate-400 text-sm font-medium">Chưa có nhiệm vụ nào được thiết lập.</p>
           </div>

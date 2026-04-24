@@ -28,9 +28,14 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
 
   return (
     <div className="p-6 space-y-10 pb-32">
-      <div className="space-y-1">
-        <h2 className="text-xl font-bold text-slate-800">Cài đặt hệ thống</h2>
-        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Cấu hình thời gian & Dữ liệu cá nhân</p>
+      <div className="flex items-center space-x-3">
+        <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center shadow-sm border border-slate-200 shrink-0">
+          <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4bb/512.gif" alt="Laptop" className="w-8 h-8" />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-slate-800">Cài đặt</h2>
+          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Cấu hình thời gian & cá nhân</p>
+        </div>
       </div>
 
       <div className="space-y-4">

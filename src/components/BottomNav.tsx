@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, BarChart2, Tag, Notebook, Settings } from 'lucide-react';
+import { Home, BarChart2, Tag, Notebook, Settings, Database } from 'lucide-react';
 
 interface BottomNavProps {
   activeTab: string;
@@ -9,7 +9,8 @@ interface BottomNavProps {
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab }) => {
   const tabs = [
     { id: 'dashboard', icon: Home, label: 'Chính' },
-    { id: 'kpi', icon: BarChart2, label: 'Chỉ tiêu' },
+    { id: 'kpi', icon: BarChart2, label: 'Mục tiêu' },
+    { id: 'vault', icon: Database, label: 'Tài liệu' },
     { id: 'promotions', icon: Tag, label: 'KM' },
     { id: 'notes', icon: Notebook, label: 'Kế hoạch' },
     { id: 'settings', icon: Settings, label: 'Cài đặt' },

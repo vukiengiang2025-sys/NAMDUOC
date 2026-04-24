@@ -57,10 +57,19 @@ export interface AnalysisRecord {
   type: 'daily' | 'promotion' | 'strategic';
 }
 
+export interface Document {
+  id: string;
+  name: string;
+  type: string;
+  content: string;
+  createdAt: string;
+}
+
 export interface AppState {
   kpi: KpiData;
   promotions: Promotion[];
   notes: UserNote[];
+  documents?: Document[];
   config: WorkingConfig;
   analysisHistory: AnalysisRecord[];
 }

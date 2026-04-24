@@ -53,9 +53,35 @@ export const fileService = {
     });
   },
 
-  async extractDocxText(file: File): Promise<string> {
-    const arrayBuffer = await file.arrayBuffer();
-    const result = await mammoth.extractRawText({ arrayBuffer });
-    return result.value;
+  async extractFileText(file: File): Promise<string> {
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    
+    if (ext === 'docx') {
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      return result.value;
+    }
+    
+    if (ext === 'xlsx' || ext === 'xls') {
+      const arrayBuffer = await file.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      let allCsv = '';
+      for (const sheetName of workbook.SheetNames) {
+        allCsv += `--- Sheet: ${sheetName} ---\n`;
+        allCsv += XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]) + '\n\n';
+      }
+      return allCsv;
+    }
+
+    if (ext === 'csv' || ext === 'txt' || ext === 'md') {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target?.result as string || '');
+        reader.onerror = reject;
+        reader.readAsText(file);
+      });
+    }
+
+    throw new Error('Chỉ hỗ trợ file DOCX, XLSX, TXT, CSV, MD');
   }
 };
