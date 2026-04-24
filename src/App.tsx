@@ -14,6 +14,7 @@ import { AppState, UserNote, Promotion, KpiEntry, WorkingConfig } from './types'
 import { dbService } from './services/dbService';
 import { kpiService } from './services/kpiService';
 import { geminiService } from './services/geminiService';
+import { notificationService } from './services/notificationService';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -27,9 +28,26 @@ export default function App() {
     const loadState = async () => {
       const saved = await dbService.getState();
       setState(saved);
+      
+      // Request notification permissions
+      await notificationService.requestPermissions();
     };
     loadState();
   }, []);
+
+  // Update morning notification context when notes or config change
+  useEffect(() => {
+    if (!state) return;
+    const updateNotifications = async () => {
+      const pendingTasks = state.notes.filter(n => !n.completed);
+      if (pendingTasks.length > 0) {
+        const body = `Hôm nay bạn có ${pendingTasks.length} công việc cần hoàn thành. Chúc ngày mới làm việc hiệu quả!`;
+        await notificationService.cancelAll();
+        await notificationService.scheduleMorningNotification("Nam Dược KPI - Lịch làm việc hôm nay", body);
+      }
+    };
+    updateNotifications();
+  }, [state?.notes, state?.config]);
 
   // Auto-save on state change
   useEffect(() => {
@@ -118,7 +136,8 @@ export default function App() {
         targetCoverage: stats.targetCoverage,
         daysPassed: stats.passedWorkingDays,
         daysRemaining: stats.remainingWorkingDaysCount,
-        totalWorkingDays: stats.totalWorkingDaysCount
+        totalWorkingDays: stats.totalWorkingDaysCount,
+        userProfile: state.userProfile
       }, 
       state.analysisHistory.slice(-3).map(h => h.content), // Lấy 3 lần phân tích gần nhất làm ngữ cảnh
       state.config.geminiApiKey);

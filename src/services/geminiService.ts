@@ -58,25 +58,30 @@ export const geminiService = {
     daysPassed: number;
     daysRemaining: number;
     totalWorkingDays: number;
+    userProfile?: { name: string; region: string; experience: string };
   }, history: string[], customKey?: string): Promise<string> {
     const ai = getGenAI(customKey);
     const historyContext = history.length > 0 
       ? `\nLịch sử phân tích các ngày trước để bạn nắm được tiến độ (Tham khảo):\n${history.join('\n---\n')}\n`
       : "";
 
-    const prompt = `Bạn là một trợ lý phân tích KPI cho trình dược viên. Hãy phân tích các số liệu sau và đưa ra nhận xét:
+    const userContext = data.userProfile 
+      ? `Trình dược viên: ${data.userProfile.name}, Khu vực: ${data.userProfile.region}, Kinh nghiệm: ${data.userProfile.experience}.` 
+      : "";
+
+    const prompt = `Bạn là một chuyên gia tư vấn chiến lược KPI cho trình dược viên Nam Dược. Hãy phân tích các số liệu sau và đưa ra nhận xét cá nhân hóa:
+    ${userContext}
     ${historyContext}
     Số liệu hiện tại:
     - Doanh số thực tế: ${data.totalSales} / Mục tiêu: ${data.targetSales} (${((data.totalSales / data.targetSales) * 100).toFixed(1)}%)
     - Độ phủ thực tế: ${data.totalCoverage} / Mục tiêu: ${data.targetCoverage} (${((data.totalCoverage / data.targetCoverage) * 100).toFixed(1)}%)
     - Số ngày làm việc đã qua: ${data.daysPassed} / Tổng: ${data.totalWorkingDays}
     - Số ngày còn lại: ${data.daysRemaining}
-    
+
     Yêu cầu:
-    1. Nhận xét ngắn gọn về hiệu suất hiện tại.
-    2. Cảnh báo nguy cơ không đạt KPI (nếu có).
-    3. Đề xuất hành động cụ thể để cải thiện.
-    4. Trình bày bằng tiếng Việt, thân thiện, súc tích.
+    1. Nhận xét ngắn gọn, sắc sảo (dưới 100 từ).
+    2. Nếu doanh số chậm, hãy gợi ý giải pháp cụ thể (ví dụ: tập trung vào sản phẩm ABC, đổi mới cách tiếp cận nhà thuốc).
+    3. Luôn giữ tinh thần hỗ trợ và thúc đẩy năng lượng tích cực cho Sales.
     
     Lưu ý: Bạn không cần tính toán lại các số liệu trên, hãy dùng chúng để phân tích.`;
 

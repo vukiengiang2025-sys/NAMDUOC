@@ -58,6 +58,36 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
       <div className="space-y-4 pt-6 border-t border-slate-100">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
           <Database className="mr-2 text-indigo-500" size={16} />
+          Hồ sơ cá nhân (Context AI)
+        </h3>
+        <div className="space-y-3">
+          <input 
+            type="text"
+            value={config.userProfile?.name || ''}
+            onChange={(e) => onUpdateConfig({ ...config, userProfile: { ...(config.userProfile || { name: '', region: '', experience: '' }), name: e.target.value } })}
+            placeholder="Họ và tên..."
+            className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"
+          />
+          <input 
+            type="text"
+            value={config.userProfile?.region || ''}
+            onChange={(e) => onUpdateConfig({ ...config, userProfile: { ...(config.userProfile || { name: '', region: '', experience: '' }), region: e.target.value } })}
+            placeholder="Khu vực phụ trách (ví dụ: Hà Nội 1)..."
+            className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"
+          />
+          <input 
+            type="text"
+            value={config.userProfile?.experience || ''}
+            onChange={(e) => onUpdateConfig({ ...config, userProfile: { ...(config.userProfile || { name: '', region: '', experience: '' }), experience: e.target.value } })}
+            placeholder="Kinh nghiệm (ví dụ: 3 năm)..."
+            className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-4 pt-6 border-t border-slate-100">
+        <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
+          <Database className="mr-2 text-indigo-500" size={16} />
           Cấu hình Gemini AI
         </h3>
         <div className="space-y-2">

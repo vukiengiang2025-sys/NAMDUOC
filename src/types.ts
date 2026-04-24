@@ -39,6 +39,7 @@ export interface WorkingConfig {
 export interface AnalysisRecord {
   date: string;
   content: string;
+  type: 'daily' | 'promotion' | 'strategic';
 }
 
 export interface AppState {
@@ -47,4 +48,9 @@ export interface AppState {
   notes: UserNote[];
   config: WorkingConfig;
   analysisHistory: AnalysisRecord[];
+  userProfile?: {
+    name: string;
+    region: string;
+    experience: string;
+  };
 }
