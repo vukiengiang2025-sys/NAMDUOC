@@ -35,7 +35,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ notes, onAdd, onToggle, on
         </div>
         <button 
           onClick={() => setIsAdding(true)}
-          className="bg-indigo-600 text-white p-3 rounded-full shadow-lg shadow-indigo-200 active:scale-95 transition-all ring-4 ring-indigo-50"
+          className="bg-red-600 text-white p-3 rounded-full shadow-lg shadow-red-200 active:scale-95 transition-all ring-4 ring-red-50"
         >
           <Plus size={24} />
         </button>
@@ -54,7 +54,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ notes, onAdd, onToggle, on
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="Gặp khách hàng, nộp báo cáo..."
-                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-red-500 focus:bg-white outline-none"
                 />
               </div>
               <div>
@@ -63,7 +63,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ notes, onAdd, onToggle, on
                   type="datetime-local" 
                   value={newDeadline}
                   onChange={(e) => setNewDeadline(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-red-500 focus:bg-white outline-none"
                 />
               </div>
               <div className="flex space-x-3 pt-2">
@@ -76,7 +76,7 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ notes, onAdd, onToggle, on
                 </button>
                 <button 
                   type="submit"
-                  className="flex-1 py-3 bg-indigo-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest shadow-md shadow-indigo-100"
+                  className="flex-1 py-3 bg-red-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest shadow-md shadow-red-100"
                 >
                   Lưu
                 </button>
@@ -91,16 +91,16 @@ export const TaskBoard: React.FC<TaskBoardProps> = ({ notes, onAdd, onToggle, on
           <div className="space-y-4">
             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
               Đang thực hiện
-              <span className="ml-2 px-2 py-0.5 bg-indigo-100 text-indigo-600 rounded-full text-[9px] font-black">{pending.length}</span>
+              <span className="ml-2 px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-[9px] font-black">{pending.length}</span>
             </h3>
             <div className="space-y-3">
               {pending.map(note => (
                 <div key={note.id} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-start space-x-4 transition-all hover:bg-slate-50">
                    <button 
                     onClick={() => onToggle(note.id)}
-                    className="mt-1 w-6 h-6 rounded-lg border-2 border-slate-100 flex items-center justify-center transition-all hover:border-indigo-500 group"
+                    className="mt-1 w-6 h-6 rounded-lg border-2 border-slate-100 flex items-center justify-center transition-all hover:border-red-500 group"
                    >
-                     <div className="w-3 h-3 rounded-sm bg-transparent group-hover:bg-indigo-100" />
+                     <div className="w-3 h-3 rounded-sm bg-transparent group-hover:bg-red-100" />
                    </button>
                    <div className="flex-1 min-w-0">
                      <p className="text-sm font-bold text-slate-800 break-words leading-tight">{note.title}</p>

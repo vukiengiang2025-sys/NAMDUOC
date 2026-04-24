@@ -1,37 +1,56 @@
+import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 
 export const notificationService = {
   async requestPermissions() {
-    const perm = await LocalNotifications.requestPermissions();
-    return perm.display === 'granted';
+    if (!Capacitor.isNativePlatform()) {
+      console.warn('Local Notifications only supported on native platforms.');
+      return false;
+    }
+    try {
+      const perm = await LocalNotifications.requestPermissions();
+      return perm.display === 'granted';
+    } catch (e) {
+      console.warn('Error requesting notification permissions', e);
+      return false;
+    }
   },
 
   async scheduleMorningNotification(title: string, body: string) {
-    // Schedule for 7:30 AM every day
-    await LocalNotifications.schedule({
-      notifications: [
-        {
-          title,
-          body,
-          id: 1,
-          schedule: {
-            on: {
-              hour: 7,
-              minute: 30
+    if (!Capacitor.isNativePlatform()) return;
+    try {
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title,
+            body,
+            id: 1,
+            schedule: {
+              on: {
+                hour: 7,
+                minute: 30
+              },
+              allowWhileIdle: true
             },
-            allowWhileIdle: true
-          },
-          sound: 'beep.wav',
-          extra: null
-        }
-      ]
-    });
+            sound: 'beep.wav',
+            extra: null
+          }
+        ]
+      });
+    } catch (e) {
+      console.warn('Error scheduling notification', e);
+    }
   },
 
   async cancelAll() {
-    const pending = await LocalNotifications.getPending();
-    if (pending.notifications.length > 0) {
-      await LocalNotifications.cancel(pending);
+    if (!Capacitor.isNativePlatform()) return;
+    try {
+      const pending = await LocalNotifications.getPending();
+      if (pending.notifications.length > 0) {
+        await LocalNotifications.cancel(pending);
+      }
+    } catch (e) {
+      console.warn('Error canceling notifications', e);
     }
   }
 };

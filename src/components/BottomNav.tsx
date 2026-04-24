@@ -26,7 +26,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex flex-col items-center justify-center px-2 transition-all ${
-                isActive ? 'text-indigo-600 scale-110' : 'text-slate-400 hover:text-slate-600'
+                isActive ? 'text-red-600 scale-110' : 'text-slate-400 hover:text-slate-600'
               }`}
             >
               <Icon size={18} className={isActive ? 'stroke-[2.5px]' : 'stroke-2'} />

@@ -47,10 +47,10 @@ export const PromotionUpload: React.FC<PromotionUploadProps> = ({
 
       <label className="block">
         <div className={`mt-4 border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer ${
-          isProcessing ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30'
+          isProcessing ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200 hover:border-red-300 hover:bg-red-50/30'
         }`}>
-          <Upload className={`w-12 h-12 mb-4 ${isProcessing ? 'text-slate-400 animate-pulse' : 'text-indigo-400'}`} />
-          <span className={`text-xs font-black uppercase tracking-widest ${isProcessing ? 'text-slate-500' : 'text-indigo-600'}`}>
+          <Upload className={`w-12 h-12 mb-4 ${isProcessing ? 'text-slate-400 animate-pulse' : 'text-red-400'}`} />
+          <span className={`text-xs font-black uppercase tracking-widest ${isProcessing ? 'text-slate-500' : 'text-red-600'}`}>
             {isProcessing ? 'AI đang bóc tách...' : 'Nạp file chính sách KM'}
           </span>
           <span className="text-[10px] text-slate-400 mt-2">Định dạng file .docx (Mammoth text extract)</span>
@@ -72,7 +72,7 @@ export const PromotionUpload: React.FC<PromotionUploadProps> = ({
             {promotions.map((p) => (
               <div key={p.id} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm relative group overflow-hidden">
                 <div className="flex justify-between items-start mb-3">
-                  <div className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest border border-indigo-100">
+                  <div className="bg-red-50 text-red-700 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest border border-red-100">
                     Sống khỏe
                   </div>
                   <button 
@@ -92,7 +92,7 @@ export const PromotionUpload: React.FC<PromotionUploadProps> = ({
                 </div>
                 <div className="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
                    <div className="flex items-center space-x-1">
-                     <Calendar size={12} className="text-indigo-400" />
+                     <Calendar size={12} className="text-red-400" />
                      <span>{new Date(p.startDate).toLocaleDateString()} — {new Date(p.endDate).toLocaleDateString()}</span>
                    </div>
                 </div>

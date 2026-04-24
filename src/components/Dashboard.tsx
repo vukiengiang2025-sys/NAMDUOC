@@ -25,7 +25,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
     { name: 'Remaining', value: Math.max(0, 100 - stats.salesPace) }
   ];
 
-  const COLORS = ['#4f46e5', '#f1f5f9'];
+  const COLORS = ['#dc2626', '#f1f5f9'];
 
   const runningPromotions = promotions.filter(p => {
     const now = new Date();
@@ -39,8 +39,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-100">
-            N
+          <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shadow-lg shadow-red-100 overflow-hidden border border-red-500">
+            <span className="text-white font-black text-xl tracking-tighter">N</span>
           </div>
           <div>
             <h1 className="text-lg font-bold text-slate-800">Xin chào!</h1>
@@ -99,7 +99,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       <div className="bg-slate-900 text-white p-5 rounded-3xl shadow-lg border border-slate-800">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <Calendar className="text-indigo-400" size={18} />
+            <Calendar className="text-red-400" size={18} />
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tiến độ thời gian</h3>
           </div>
           <span className="text-[10px] font-bold text-slate-400">{stats.passedWorkingDays} / {stats.totalWorkingDaysCount} Ngày</span>
@@ -109,39 +109,39 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <span className="text-4xl font-black">{stats.timePace.toFixed(0)}%</span>
           <div className="text-right">
             <p className="text-[10px] text-slate-400 uppercase tracking-tighter">Ngày còn lại</p>
-            <p className="text-xl font-black text-indigo-400">{stats.remainingWorkingDaysCount}</p>
+            <p className="text-xl font-black text-red-400">{stats.remainingWorkingDaysCount}</p>
           </div>
         </div>
 
         <div className="space-y-3 pt-3 border-t border-slate-800">
           <div className="flex justify-between items-center text-xs">
             <span className="text-slate-400">Cần đạt mỗi ngày:</span>
-            <span className="font-bold text-indigo-300">{stats.dailyTargetSales.toLocaleString('vi-VN')} đ</span>
+            <span className="font-bold text-red-300">{stats.dailyTargetSales.toLocaleString('vi-VN')} đ</span>
           </div>
         </div>
       </div>
 
       {/* AI Analysis */}
-      <div className="bg-indigo-50 p-6 rounded-3xl border border-indigo-100 space-y-4">
+      <div className="bg-red-50 p-6 rounded-3xl border border-red-100 space-y-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" />
-            <h2 className="text-[10px] font-bold text-indigo-900 uppercase tracking-widest">Gemini AI Insights</h2>
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+            <h2 className="text-[10px] font-bold text-red-900 uppercase tracking-widest">Gemini AI Insights</h2>
           </div>
           <button 
             onClick={onAnalyze}
             disabled={isAnalyzing}
-            className="text-[10px] font-black text-indigo-600 bg-white shadow-sm border border-indigo-100 px-3 py-1 rounded-full active:scale-95 transition-transform uppercase"
+            className="text-[10px] font-black text-red-600 bg-white shadow-sm border border-red-100 px-3 py-1 rounded-full active:scale-95 transition-transform uppercase"
           >
-            {isAnalyzing ? '...' : 'Refresh'}
+            {isAnalyzing ? '...' : 'Phân tích'}
           </button>
         </div>
         {aiAnalysis ? (
-           <div className="text-sm text-slate-700 leading-relaxed italic">
-             {aiAnalysis}
+           <div className="text-sm text-slate-800 leading-relaxed font-sans">
+             {aiAnalysis.split('\n').map((line, i) => <p key={i} className="mb-2 last:mb-0">{line}</p>)}
            </div>
         ) : (
-          <p className="text-xs text-indigo-400 italic">Click refresh for AI performance insights.</p>
+          <p className="text-xs text-red-400 italic">Nhấn phân tích để AI đánh giá hiệu suất.</p>
         )}
       </div>
 
@@ -154,8 +154,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {runningPromotions.length > 0 ? (
           <div className="space-y-3">
             {runningPromotions.slice(0, 2).map((p) => (
-              <div key={p.id} className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-start space-x-3 transition-all hover:border-indigo-200">
-                <div className="bg-indigo-50 p-2 rounded-lg text-indigo-600">
+              <div key={p.id} className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-start space-x-3 transition-all hover:border-red-200">
+                <div className="bg-red-50 p-2 rounded-lg text-red-600">
                   <Tag size={16} />
                 </div>
                 <div className="flex-1">

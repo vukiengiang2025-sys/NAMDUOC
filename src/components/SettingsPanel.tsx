@@ -35,7 +35,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
 
       <div className="space-y-4">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
-          <Calendar className="mr-2 text-indigo-500" size={16} />
+          <Calendar className="mr-2 text-red-500" size={16} />
           Ngày nghỉ hàng tuần
         </h3>
         <div className="flex justify-between gap-2">
@@ -45,7 +45,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
               onClick={() => toggleDay(day.id)}
               className={`flex-1 h-12 rounded-2xl flex items-center justify-center text-[11px] font-black transition-all ${
                 config.weeklyOffDays.includes(day.id)
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100'
+                  ? 'bg-red-600 text-white shadow-lg shadow-red-100'
                   : 'bg-white border border-slate-200 text-slate-400 hover:border-slate-300'
               }`}
             >
@@ -57,7 +57,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
 
       <div className="space-y-4 pt-6 border-t border-slate-100">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
-          <Database className="mr-2 text-indigo-500" size={16} />
+          <Database className="mr-2 text-red-500" size={16} />
           Hồ sơ cá nhân (Context AI)
         </h3>
         <div className="space-y-3">
@@ -87,7 +87,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
 
       <div className="space-y-4 pt-6 border-t border-slate-100">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
-          <Database className="mr-2 text-indigo-500" size={16} />
+          <Database className="mr-2 text-red-500" size={16} />
           Cấu hình Gemini AI
         </h3>
         <div className="space-y-2">
@@ -97,7 +97,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
             value={config.geminiApiKey || ''}
             onChange={(e) => onUpdateConfig({ ...config, geminiApiKey: e.target.value })}
             placeholder="Dán API Key của bạn tại đây..."
-            className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-xs focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm"
+            className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-xs focus:ring-2 focus:ring-red-500 outline-none shadow-sm"
           />
           <p className="text-[9px] text-slate-400">Key được lưu cục bộ trên thiết bị của bạn.</p>
         </div>
@@ -105,13 +105,13 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ config, onUpdateConfig,
 
       <div className="space-y-6 pt-6 border-t border-slate-100">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center">
-          <Database className="mr-2 text-indigo-500" size={16} />
+          <Database className="mr-2 text-red-500" size={16} />
           Quyền riêng tư
         </h3>
-        <div className="bg-indigo-50 p-6 rounded-3xl border border-indigo-100 space-y-6">
+        <div className="bg-red-50 p-6 rounded-3xl border border-red-100 space-y-6">
            <div className="flex items-start space-x-3">
-             <ShieldCheck size={20} className="text-indigo-600 shrink-0" />
-             <p className="text-xs text-indigo-900 leading-relaxed font-medium">
+             <ShieldCheck size={20} className="text-red-600 shrink-0" />
+             <p className="text-xs text-red-900 leading-relaxed font-medium">
                Ứng dụng hoạt động Offline-First. Toàn bộ dữ liệu Excel, DOCX và ghi chú chỉ tồn tại trên thiết bị này.
              </p>
            </div>

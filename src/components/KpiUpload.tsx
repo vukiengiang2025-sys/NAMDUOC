@@ -54,10 +54,10 @@ export const KpiUpload: React.FC<KpiUploadProps> = ({ onDataLoaded, entries, onC
 
       <label className="block">
         <div className={`mt-4 border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer ${
-          isUploading ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30 shadow-sm'
+          isUploading ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200 hover:border-red-300 hover:bg-red-50/30 shadow-sm'
         }`}>
-          <Upload className={`w-12 h-12 mb-4 ${isUploading ? 'text-slate-400 animate-bounce' : 'text-indigo-400'}`} />
-          <span className={`text-xs font-black uppercase tracking-widest ${isUploading ? 'text-slate-500' : 'text-indigo-600'}`}>
+          <Upload className={`w-12 h-12 mb-4 ${isUploading ? 'text-slate-400 animate-bounce' : 'text-red-400'}`} />
+          <span className={`text-xs font-black uppercase tracking-widest ${isUploading ? 'text-slate-500' : 'text-red-600'}`}>
             {isUploading ? 'Đang phân tích...' : 'Nạp dữ liệu Excel'}
           </span>
           <span className="text-[10px] text-slate-400 mt-2">Dữ liệu doanh số & độ phủ (.xlsx)</span>
